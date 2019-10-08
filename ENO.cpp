@@ -49,31 +49,42 @@ vector<float> eno(int n, vector<vector<float> > points, float x, int i,  int p)
     int mid, left, right;
     left = 0;
     right = n-1;
-    while(left != right)
+
+    cout << "Left: " << left << "  Right: " << right << endl;
+
+    while(left < right)
     {
         mid = (left + right)/2;
         if(points[mid][0] > x)
         {
-            left = mid + 1;
+            right = mid - 1;
         }
         else if(points[mid][0] < x)
         {
-            right = mid - 1;
+            left = mid + 1;
         }
         else
         {
             left = mid;
             right = mid;
         }
+        cout << "Left: " << left << "  Mid: " << mid << "  Right: " << right << endl;
     }
+
+    cout << "Found point closest to " << x << ": (" << points[left][0] << ", " << points[left][1] << ")" << endl;
     
     bool is_left;
     // Check if current point found is to the left of x or to the right of x
     if(points[left][0] > x)
     {
+        cout << "Point is to the left of " << x << endl;
+        is_left = false;
+    }
+    else
+    {
+        cout << "Point is to the right of " << x << endl;
         is_left = true;
     }
-    else is_left = false;
 
     // Make sure the left and right-most bounds are within the array
     int far_left, far_right;
@@ -124,5 +135,10 @@ int main()
     points[2] = vector<float>{1.0f, 0.0f};
     points[3] = vector<float>{2.0f, 2.0f};
 
-    eno(4, points, 0.5, 1, 2);
+    // vector<float> eno(int n, vector<vector<float> > points, float x, int i,  int p)
+    vector<float> coeffs = eno(4, points, 0.5, 1, 2);
+    for(auto iter = coeffs.begin(); iter != coeffs.end(); ++iter)
+    {
+        cout << *iter << "  ";
+    }
 }
