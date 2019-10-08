@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <queue>
+#include <math.h>
 
 using namespace std;
 
@@ -13,10 +14,10 @@ using namespace std;
  * level: The current level at which to calculate divided differences
  * delta: Used to keep track of which x-coordinates to subtract during divided difference calculations
  */
-void divided_difference(queue<float>* curr_points, vector<vector<float>>* eno_points, int start_index, vector<float>* coeffs, int level, int delta)
+void divided_difference(queue<float>* curr_points, vector<vector<float> >* eno_points, int start_index, vector<float>* coeffs, int level, int delta)
 {
     queue<float>& ref_curr = *curr_points;
-    vector<vector<float>>& ref_points = *eno_points;
+    vector<vector<float> >& ref_points = *eno_points;
 
     coeffs->push_back(ref_curr.front());
     for(int i = 0; i < level - 1; ++i)
@@ -42,7 +43,7 @@ void divided_difference(queue<float>* curr_points, vector<vector<float>>* eno_po
  * Output
  * A vector of the coefficients for the ENO interpolating polynomial
  */
-vector<float> eno(int n, vector<vector<float>> points, float x, int i,  int p)
+vector<float> eno(int n, vector<vector<float> > points, float x, int i,  int p)
 {
     // Do a binary search to find the index of the x-coordinate closest to x
     int mid, left, right;
@@ -107,7 +108,7 @@ vector<float> eno(int n, vector<vector<float>> points, float x, int i,  int p)
             delta++;
         }
         coeffs[p] = curr_points.front(); //The last value in the divided difference table (and the queue)
-        if(abs(coeffs[p]) < abs(min_coeffs[p])) min_coeffs = coeffs;
+        if(fabs(coeffs[p]) < fabs(min_coeffs[p])) min_coeffs = coeffs;
         far_left++;
         end++;
     }
@@ -117,7 +118,7 @@ vector<float> eno(int n, vector<vector<float>> points, float x, int i,  int p)
 
 int main()
 {
-    vector<vector<float>> points;
+    vector<vector<float> > points(4);
     points[0] = vector<float>{-1.0f, 1.0f};
     points[1] = vector<float>{0.0f, 1.0f};
     points[2] = vector<float>{1.0f, 0.0f};
